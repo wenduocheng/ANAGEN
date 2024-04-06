@@ -75,7 +75,7 @@ def main():
     kernel_choices = args.kernel_choices if args.kernel_choices[0] is not None else kernel_choices_default
     dilation_choices = args.dilation_choices if args.dilation_choices[0] is not None else dilation_choices_default
 
-    train_loader, val_loader, test_loader, n_train, n_val, n_test, data_kwargs = get_data(args.dataset, batch_size, arch, args.valid_split)
+    train_loader, val_loader, test_loader, n_train, n_val, n_test = get_data(args.dataset, batch_size)
     model = get_model(arch, sample_shape, num_classes, config_kwargs)
     metric, compare_metrics = get_metric(args.dataset)
     
@@ -101,8 +101,8 @@ def main():
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=weight_sched_search)
     lr_sched_iter = arch == 'convnext'
     
-    decoder = data_kwargs['decoder'] if data_kwargs is not None and 'decoder' in data_kwargs else None 
-    transform = data_kwargs['transform'] if data_kwargs is not None and 'transform' in data_kwargs else None 
+    decoder =  None 
+    transform =  None 
     n_train_temp = int(quick_search * n_train) + 1 if quick_search < 1 else n_train
 
     if args.device == 'cuda':
@@ -176,7 +176,7 @@ def main():
                 
                 else:
                     search_scores = []
-                    search_train_loader, search_val_loader, search_test_loader, search_n_train, search_n_val, search_n_test, search_data_kwargs = get_data(args.dataset, accum * batch_size, arch_retrain, True)
+                    search_train_loader, search_val_loader, search_test_loader, search_n_train, search_n_val, search_n_test = get_data(args.dataset, accum * batch_size, arch_retrain, True)
                     retrain_model = get_model(arch_retrain, sample_shape, num_classes, config_kwargs, ks = ks, ds = ds)
                     retrain_model = MixtureSupernet.create(retrain_model.cpu(), in_place=True)
 
@@ -233,7 +233,7 @@ def main():
 
                 print("\n------- Start Retrain --------")
                 retrain_model = get_model(arch_retrain, sample_shape, num_classes, config_kwargs, ks = ks, ds = ds, dropout = drop_rate)
-                retrain_train_loader, retrain_val_loader, retrain_test_loader, retrain_n_train, retrain_n_val, retrain_n_test, data_kwargs = get_data(args.dataset, accum * batch_size, arch_retrain, args.valid_split)
+                retrain_train_loader, retrain_val_loader, retrain_test_loader, retrain_n_train, retrain_n_val, retrain_n_test = get_data(args.dataset, accum * batch_size)
                 retrain_n_temp = int(quick_retrain * retrain_n_train) + 1 if quick_retrain < 1 else retrain_n_train
 
                 retrain_model = MixtureSupernet.create(retrain_model.cpu(), in_place=True)
@@ -302,7 +302,7 @@ def main():
             np.save(os.path.join(args.save_dir, 'test_score.npy'), test_scores)
 
 def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, accum, temp, decoder=None, transform=None, lr_sched_iter=False, min_lr=5e-6, scale_grad=False):
-        
+    
     model.train()
                     
     train_loss = 0

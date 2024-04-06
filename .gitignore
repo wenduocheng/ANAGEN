@@ -1,1 +1,4 @@
 *.mat
+__pycache__
+results_acc/
+relax/
