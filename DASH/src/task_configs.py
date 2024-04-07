@@ -7,7 +7,8 @@ import operator
 from itertools import product
 from functools import reduce, partial
 
-from networks.deepsea_dash import DeepSEA
+from networks.deepsea import DeepSEA
+from networks.wrn1d import ResNet1D
 
 from data_loaders import load_deepsea
 from task_utils import FocalLoss, LpLoss
@@ -39,6 +40,8 @@ def get_model(arch, sample_shape, num_classes, config_kwargs, ks = None, ds = No
     # 1D model arch
     if arch == 'deepsea':
         model = DeepSEA(ks = ks, ds = ds)
+    elif arch == 'wrn':
+        model = ResNet1D(in_channels = in_channel, mid_channels=mid_channels, num_pred_classes=num_classes, dropout_rate=dropout, ks = ks, ds = ds, activation=activation, remain_shape=remain_shape)
    
     return model
 
@@ -52,9 +55,9 @@ def get_config(dataset):
     config_kwargs = {'temp': 1, 'arch_retrain_default': None, 'grad_scale': 100, 'activation': None, 'remain_shape': False, 'pool_k': 8, 'squeeze': False, 'dropout': 0}
     
     if dataset == "deepsea":
-        dims, sample_shape, num_classes = 1, (1, 4, 1000), 36
+        dims, sample_shape, num_classes = 1, (1, 4, 1000), 919
         kernel_choices_default, dilation_choices_default = [3, 7, 11, 15, 19], [1, 3, 7, 15]
-        loss = nn.BCEWithLogitsLoss(pos_weight=4 * torch.ones((36, )))
+        loss = nn.BCEWithLogitsLoss(pos_weight=4 * torch.ones((919, )))
 
         batch_size = 32
         arch_default = 'wrn'  

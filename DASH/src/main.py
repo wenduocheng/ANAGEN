@@ -101,8 +101,6 @@ def main():
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=weight_sched_search)
     lr_sched_iter = arch == 'convnext'
     
-    decoder =  None 
-    transform =  None 
     n_train_temp = int(quick_search * n_train) + 1 if quick_search < 1 else n_train
 
     if args.device == 'cuda':
@@ -111,8 +109,6 @@ def main():
             loss.cuda()
         except:
             pass
-        if decoder is not None:
-            decoder.cuda()
 
     print("search arch:", arch, "\tretrain arch:", arch_retrain)
     print("batch size:", batch_size, "\tlr:", lr, "\tarch lr:", arch_lr)
@@ -120,19 +116,20 @@ def main():
     print("kernel choices:", kernel_choices_default, "\tdilation choices:", dilation_choices_default)
     print("num train batch:", n_train, "\tnum validation batch:", n_val, "\tnum test batch:", n_test)
 
+    torch.cuda.empty_cache()
     print("\n------- Start Arch Search --------")
     print("param count:", count_params(model))
     for ep in range(epochs):
         time_start = default_timer()
 
-        train_loss = train_one_epoch(model, optimizer, scheduler, args.device, train_loader, loss, clip, 1, n_train_temp, decoder, transform, lr_sched_iter, scale_grad=not args.baseline)
+        train_loss = train_one_epoch(model, optimizer, scheduler, args.device, train_loader, loss, clip, 1, n_train_temp, lr_sched_iter, scale_grad=not args.baseline)
 
         if args.verbose and not args.baseline and (ep + 1) % args.print_freq == 0:
             print_grad(model, kernel_choices, dilation_choices)
 
         if ep % validation_freq == 0 or ep == epochs - 1: 
             if args.baseline:
-                val_loss, val_score = evaluate(model, args.device, val_loader, loss, metric, n_val, decoder, transform, fsd_epoch=ep if args.dataset == 'FSD' else None)
+                val_loss, val_score = evaluate(model, args.device, val_loader, loss, metric, n_val, fsd_epoch=ep if args.dataset == 'FSD' else None)
                 train_score.append(val_score)
 
                 if (ep + 1) % args.print_freq == 0  or ep == epochs - 1: 
@@ -215,9 +212,9 @@ def main():
 
                         for retrain_ep in range(search_epochs):
 
-                            retrain_loss = train_one_epoch(retrain_model, retrain_optimizer, retrain_scheduler, args.device, search_train_loader, loss, retrain_clip, 1, search_n_temp, decoder, transform, lr_sched_iter)
+                            retrain_loss = train_one_epoch(retrain_model, retrain_optimizer, retrain_scheduler, args.device, search_train_loader, loss, retrain_clip, 1, search_n_temp, lr_sched_iter)
 
-                        retrain_val_loss, retrain_val_score = evaluate(retrain_model, args.device, search_val_loader, loss, metric, search_n_val, decoder, transform, fsd_epoch=200 if args.dataset == 'FSD' else None)
+                        retrain_val_loss, retrain_val_score = evaluate(retrain_model, args.device, search_val_loader, loss, metric, search_n_val, fsd_epoch=200 if args.dataset == 'FSD' else None)
                         retrain_time_end = default_timer()
                         search_scores.append(retrain_val_score)
                         train_time.append(retrain_time_end - retrain_time_start)
@@ -251,10 +248,10 @@ def main():
                 print("param count:", count_params(retrain_model))
                 for retrain_ep in range(retrain_epochs):
                     retrain_time_start = default_timer()
-                    retrain_loss = train_one_epoch(retrain_model, retrain_optimizer, retrain_scheduler, args.device, retrain_train_loader, loss, retrain_clip, 1, retrain_n_temp, decoder, transform, lr_sched_iter)
+                    retrain_loss = train_one_epoch(retrain_model, retrain_optimizer, retrain_scheduler, args.device, retrain_train_loader, loss, retrain_clip, 1, retrain_n_temp, lr_sched_iter)
 
                     if retrain_ep % validation_freq == 0 or retrain_ep == retrain_epochs - 1:
-                        retrain_val_loss, retrain_val_score = evaluate(retrain_model, args.device, retrain_val_loader, loss, metric, retrain_n_val, decoder, transform, fsd_epoch=retrain_ep if args.dataset == 'FSD' else None)
+                        retrain_val_loss, retrain_val_score = evaluate(retrain_model, args.device, retrain_val_loader, loss, metric, retrain_n_val, fsd_epoch=retrain_ep if args.dataset == 'FSD' else None)
 
                         retrain_time_end = default_timer()
                         time_retrain += retrain_time_end - retrain_time_start
@@ -286,7 +283,7 @@ def main():
             test_scores = []
             test_model = retrain_model
             test_time_start = default_timer()
-            test_loss, test_score = evaluate(test_model, args.device, retrain_test_loader, loss, metric, retrain_n_test, decoder, transform, fsd_epoch=200 if args.dataset == 'FSD' else None)
+            test_loss, test_score = evaluate(test_model, args.device, retrain_test_loader, loss, metric, retrain_n_test, fsd_epoch=200 if args.dataset == 'FSD' else None)
             test_time_end = default_timer()
             test_scores.append(test_score)
 
@@ -294,14 +291,15 @@ def main():
 
             test_model.load_state_dict(torch.load(os.path.join(args.save_dir, 'network_weights.pt')))
             test_time_start = default_timer()
-            test_loss, test_score = evaluate(test_model, args.device, retrain_test_loader, loss, metric, retrain_n_test, decoder, transform, fsd_epoch=200 if args.dataset == 'FSD' else None)
+            test_loss, test_score = evaluate(test_model, args.device, retrain_test_loader, loss, metric, retrain_n_test, fsd_epoch=200 if args.dataset == 'FSD' else None)
             test_time_end = default_timer()
             test_scores.append(test_score)
 
             print("[test best-validated]", "\ttime elapsed:", "%.4f" % (test_time_end - test_time_start), "\ttest loss:", "%.4f" % test_loss, "\ttest score:", "%.4f" % test_score)
             np.save(os.path.join(args.save_dir, 'test_score.npy'), test_scores)
 
-def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, accum, temp, decoder=None, transform=None, lr_sched_iter=False, min_lr=5e-6, scale_grad=False):
+
+def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, accum, temp, lr_sched_iter=False, min_lr=5e-6, scale_grad=False):
     
     model.train()
                     
@@ -309,24 +307,10 @@ def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, acc
     optimizer.zero_grad()
 
     for i, data in enumerate(loader):
-        if transform is not None:
-            x, y, z = data
-            z = z.to(device)
-        else:
-            x, y = data 
-        
+        x, y = data 
         x, y = x.to(device), y.to(device)
             
-        out = model(x)
-
-        if decoder is not None:
-            out = decoder.decode(out).view(x.shape[0], -1)
-            y = decoder.decode(y).view(x.shape[0], -1)
-
-        if transform is not None:
-            out = transform(out, z)
-            y = transform(y, z)
-                        
+        out = model(x)          
         l = loss(out, y)
         l.backward()
 
@@ -354,7 +338,7 @@ def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, acc
     return train_loss / temp
 
 
-def evaluate(model, device, loader, loss, metric, n_eval, decoder=None, transform=None, fsd_epoch=None):
+def evaluate(model, device, loader, loss, metric, n_eval, fsd_epoch=None):
     model.eval()
     
     eval_loss, eval_score = 0, 0
@@ -370,15 +354,6 @@ def evaluate(model, device, loader, loss, metric, n_eval, decoder=None, transfor
                                     
                 x, y = x.to(device), y.to(device)
                 out = model(x)
-                
-                if decoder is not None:
-                    out = decoder.decode(out).view(x.shape[0], -1)
-                    y = decoder.decode(y).view(x.shape[0], -1)
-                                    
-                if transform is not None:
-                    out = transform(out, z)
-                    y = transform(y, z)
-
                 eval_loss += loss(out, y).item()
                 eval_score += metric(out, y).item()
 
