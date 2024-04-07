@@ -19,7 +19,7 @@ class DeepseaDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.X)
 
-def load_deepsea(batch_size, downsample=False):
+def load_deepsea_original(batch_size):
     path = "/home/ubuntu/automation/DASH/src/data/"
 
     with h5py.File(path+"train.mat", 'r') as file:
@@ -35,9 +35,6 @@ def load_deepsea(batch_size, downsample=False):
     x_test = test_data["testxdata"]
     y_test = test_data["testdata"]
 
-    if downsample:
-        x_train, y_train, x_valid, y_valid, x_test, y_test = x_train[::2], y_train[::2], x_valid[::2], y_valid[::2], x_test[::2], y_test[::2]
-
     train_dataset = DeepseaDataset(x_train, y_train)
     valid_dataset = DeepseaDataset(x_valid, y_valid)
     test_dataset = DeepseaDataset(x_test, y_test)
@@ -51,6 +48,48 @@ def load_deepsea(batch_size, downsample=False):
     print("No. of test samples = {}, batches = {}".format(test_dataset.__len__(), test_loader.__len__()))
 
     return train_loader, valid_loader, test_loader
+
+def load_deepsea(batch_size, one_hot = True, valid_split=1):
+    filename = '/home/ubuntu/automation/DASH/src/data/deepsea_filtered.npz'
+    data = np.load(filename)
+
+    if valid_split > 0:
+        if one_hot:
+            x_train = torch.from_numpy(data['x_train']).transpose(-1, -2).float()  
+        else:
+            x_train = torch.from_numpy(np.argmax(data['x_train'], axis=2)).unsqueeze(-2).float()
+        y_train = torch.from_numpy(data['y_train']).float() 
+        if one_hot:
+            x_val = torch.from_numpy(data['x_val']).transpose(-1, -2).float()   # shape = (2490, 1000, 4)
+        else:
+            x_val = torch.from_numpy(np.argmax(data['x_val'], axis=2)).unsqueeze(-2).float() 
+        y_val = torch.from_numpy(data['y_val']).float()  # shape = (2490, 36)
+
+    else:
+        if one_hot:
+            x_train = torch.from_numpy(np.concatenate((data['x_train'], data['x_val']), axis=0)).transpose(-1, -2).float()  
+        else:
+            x_train = torch.from_numpy(np.argmax(np.concatenate((data['x_train'], data['x_val']), axis=0), axis=2)).unsqueeze(-2).float()
+        y_train = torch.from_numpy(np.concatenate((data['y_train'], data['y_val']), axis=0)).float() 
+
+    if one_hot:
+        x_test = torch.from_numpy(data['x_test']).transpose(-1, -2).float()  # shape = (149400, 1000, 4)
+    else:
+        x_test = torch.from_numpy(np.argmax(data['x_test'], axis=2)).unsqueeze(-2).float()
+    y_test = torch.from_numpy(data['y_test']).float()   # shape = (149400, 36)
+    
+    if valid_split > 0:
+        train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_train, y_train), batch_size = batch_size, shuffle=True, num_workers=4, pin_memory=True)
+        val_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_val, y_val), batch_size = 512, shuffle=True, num_workers=4, pin_memory=True)
+        test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_test, y_test), batch_size = 512, shuffle=True, num_workers=4, pin_memory=True)
+        
+        return train_loader, val_loader, test_loader
+    else:
+        train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_train, y_train), batch_size = batch_size, shuffle=False, num_workers=4, pin_memory=True)
+        test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_test, y_test), batch_size = 512, shuffle=True, num_workers=4, pin_memory=True)
+
+    return train_loader, None, test_loader
+
 
 if __name__ == "__main__":
     train_loader, valid_loader, test_loader = load_deepsea(batch_size=32)

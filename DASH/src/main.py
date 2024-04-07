@@ -111,7 +111,7 @@ def main():
             pass
 
     print("search arch:", arch, "\tretrain arch:", arch_retrain)
-    print("batch size:", batch_size, "\tlr:", lr, "\tarch lr:", arch_lr)
+    print("batch size:", batch_size, "\tlr:", lr, "\tarch lr:", arch_lr, "\tepochs:", epochs)
     print("arch configs:", config_kwargs)
     print("kernel choices:", kernel_choices_default, "\tdilation choices:", dilation_choices_default)
     print("num train batch:", n_train, "\tnum validation batch:", n_val, "\tnum test batch:", n_test)
@@ -120,6 +120,7 @@ def main():
     print("\n------- Start Arch Search --------")
     print("param count:", count_params(model))
     for ep in range(epochs):
+        print("Epoch:", ep)
         time_start = default_timer()
 
         train_loss = train_one_epoch(model, optimizer, scheduler, args.device, train_loader, loss, clip, 1, n_train_temp, lr_sched_iter, scale_grad=not args.baseline)
@@ -173,7 +174,7 @@ def main():
                 
                 else:
                     search_scores = []
-                    search_train_loader, search_val_loader, search_test_loader, search_n_train, search_n_val, search_n_test = get_data(args.dataset, accum * batch_size, arch_retrain, True)
+                    search_train_loader, search_val_loader, search_test_loader, search_n_train, search_n_val, search_n_test = get_data(args.dataset, accum * batch_size)
                     retrain_model = get_model(arch_retrain, sample_shape, num_classes, config_kwargs, ks = ks, ds = ds)
                     retrain_model = MixtureSupernet.create(retrain_model.cpu(), in_place=True)
 
@@ -346,12 +347,7 @@ def evaluate(model, device, loader, loss, metric, n_eval, fsd_epoch=None):
     if fsd_epoch is None:
         with torch.no_grad():
             for data in loader:
-                if transform is not None:
-                    x, y, z = data
-                    z = z.to(device)
-                else:
-                    x, y = data
-                                    
+                x, y = data   
                 x, y = x.to(device), y.to(device)
                 out = model(x)
                 eval_loss += loss(out, y).item()

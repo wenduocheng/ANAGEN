@@ -15,7 +15,7 @@ class DeepSEA(nn.Module):
         self.drop1 = nn.Dropout(p=0.2)
         self.drop2 = nn.Dropout(p=0.5)
         self.linear1 = nn.Linear(59520, 925)
-        self.linear2 = nn.Linear(925, 919)
+        self.linear2 = nn.Linear(925, 36)
 
     def forward(self, input):
         s = input.shape[-1]

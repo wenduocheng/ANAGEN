@@ -55,11 +55,11 @@ def get_config(dataset):
     config_kwargs = {'temp': 1, 'arch_retrain_default': None, 'grad_scale': 100, 'activation': None, 'remain_shape': False, 'pool_k': 8, 'squeeze': False, 'dropout': 0}
     
     if dataset == "deepsea":
-        dims, sample_shape, num_classes = 1, (1, 4, 1000), 919
+        dims, sample_shape, num_classes = 1, (1, 4, 1000), 36
         kernel_choices_default, dilation_choices_default = [3, 7, 11, 15, 19], [1, 3, 7, 15]
-        loss = nn.BCEWithLogitsLoss(pos_weight=4 * torch.ones((919, )))
+        loss = nn.BCEWithLogitsLoss(pos_weight=4 * torch.ones((36, )))
 
-        batch_size = 32
+        batch_size = 64
         arch_default = 'wrn'  
         config_kwargs['grad_scale'] = 10
     else:
