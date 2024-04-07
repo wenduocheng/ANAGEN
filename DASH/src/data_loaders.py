@@ -11,15 +11,15 @@ class DeepseaDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         feats = self.X[idx]
         label = self.y[idx]
-        feats = torch.from_numpy(feats).float()
-        label = torch.from_numpy(label).float()
+        feats = torch.from_numpy(feats).to(torch.float32)
+        label = torch.from_numpy(label).to(torch.float32)
 
         return feats ,label
 
     def __len__(self):
         return len(self.X)
 
-def load_deepsea(batch_size):
+def load_deepsea(batch_size, downsample=False):
     path = "/home/ubuntu/automation/DASH/src/data/"
 
     with h5py.File(path+"train.mat", 'r') as file:
@@ -34,6 +34,9 @@ def load_deepsea(batch_size):
     y_valid = valid_data["validdata"]
     x_test = test_data["testxdata"]
     y_test = test_data["testdata"]
+
+    if downsample:
+        x_train, y_train, x_valid, y_valid, x_test, y_test = x_train[::2], y_train[::2], x_valid[::2], y_valid[::2], x_test[::2], y_test[::2]
 
     train_dataset = DeepseaDataset(x_train, y_train)
     valid_dataset = DeepseaDataset(x_valid, y_valid)
