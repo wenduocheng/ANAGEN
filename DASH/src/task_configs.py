@@ -56,7 +56,7 @@ def get_config(dataset):
     
     if dataset == "deepsea":
         dims, sample_shape, num_classes = 1, (1, 4, 1000), 36
-        kernel_choices_default, dilation_choices_default = [3, 7, 11, 15, 19], [1, 3, 7, 15]
+        kernel_choices_default, dilation_choices_default = [3, 7, 11, 15, 19, 23, 27, 31], [1, 2, 3, 5, 7, 15]
         loss = nn.BCEWithLogitsLoss(pos_weight=4 * torch.ones((36, )))
 
         batch_size = 64
@@ -69,7 +69,7 @@ def get_config(dataset):
     lr, arch_lr = (1e-2, 5e-3) if config_kwargs['remain_shape'] else (0.1, 0.05) 
 
     if arch_default[:3] == 'wrn':
-        epochs_default, retrain_epochs = 100, 200
+        epochs_default, retrain_epochs = 10, 10
         retrain_freq = epochs_default
         opt, arch_opt = partial(torch.optim.SGD, momentum=0.9, nesterov=True), partial(torch.optim.SGD, momentum=0.9, nesterov=True)
         weight_decay = 5e-4 
@@ -97,28 +97,6 @@ def get_config(dataset):
                     break
                     
             return math.pow(base, optim_factor)
-
-    elif arch_default == 'convnext':
-        epochs_default, retrain_epochs, retrain_freq = 100, 300, 100
-        opt, arch_opt = torch.optim.AdamW, torch.optim.AdamW
-        lr, arch_lr = 4e-3, 1e-2
-        weight_decay = 0.05
-            
-        base_value = lr
-        final_value = 1e-6
-        niter_per_ep = 392 
-        warmup_iters = 0
-        epochs = retrain_epochs
-        iters = np.arange(epochs * niter_per_ep - warmup_iters)
-        schedule = np.array([final_value + 0.5 * (base_value - final_value) * (1 + math.cos(math.pi * i / (len(iters)))) for i in iters]) / base_value
-
-        def weight_sched_search(iter):
-            return schedule[iter]
-        
-        def weight_sched_train(iter):
-            return schedule[iter]
-
-    # arch_opt = ExpGrad
 
     return dims, sample_shape, num_classes, batch_size, epochs_default, loss, lr, arch_lr, weight_decay, opt, arch_opt, weight_sched_search, weight_sched_train, accum, clip, retrain_clip, validation_freq, retrain_freq,\
     einsum, retrain_epochs, arch_default, kernel_choices_default, dilation_choices_default, quick_search, quick_retrain, config_kwargs

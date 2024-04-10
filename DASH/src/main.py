@@ -120,7 +120,6 @@ def main():
     print("\n------- Start Arch Search --------")
     print("param count:", count_params(model))
     for ep in range(epochs):
-        print("Epoch:", ep)
         time_start = default_timer()
 
         train_loss = train_one_epoch(model, optimizer, scheduler, args.device, train_loader, loss, clip, 1, n_train_temp, lr_sched_iter, scale_grad=not args.baseline)
@@ -229,6 +228,16 @@ def main():
                     print("[selected hp] lr = ", "%.6f" % lr, " drop rate = ", "%.2f" % drop_rate, " weight decay = ", "%.6f" % weight_decay, " momentum = ", "%.2f" % momentum)
                     del search_train_loader, search_val_loader
 
+                res = {
+                "retrain_time": None,
+                "retrain_score": None,
+                "test_time": None,
+                "test_score": None,
+                "kernel_choices": ks,
+                "dilation_choices": ds,
+                "hyperparams": {"lr": lr, "bs": batch_size, "drop_out": drop_rate, "weight_decay": weight_decay, "momentum": momentum}
+            }
+
                 print("\n------- Start Retrain --------")
                 retrain_model = get_model(arch_retrain, sample_shape, num_classes, config_kwargs, ks = ks, ds = ds, dropout = drop_rate)
                 retrain_train_loader, retrain_val_loader, retrain_test_loader, retrain_n_train, retrain_n_val, retrain_n_test = get_data(args.dataset, accum * batch_size)
@@ -262,8 +271,6 @@ def main():
                             try:
                                 retrain_model.save_arch(os.path.join(args.save_dir, 'arch.th'))
                                 torch.save(retrain_model.state_dict(), os.path.join(args.save_dir, 'network_weights.pt'))
-                                np.save(os.path.join(args.save_dir, 'retrain_score.npy'), retrain_score)
-                                np.save(os.path.join(args.save_dir, 'retrain_time.npy'), retrain_time)
                             except AttributeError:
                                 pass
                         
@@ -275,18 +282,18 @@ def main():
                             param_values_list.append(param_values.cpu().detach().numpy())
                             retrain_time.append(time_retrain)
                             prev_param_values = param_values
-
-                            np.save(os.path.join(args.save_dir, 'retrain_score.npy'), retrain_score)
-                            np.save(os.path.join(args.save_dir, 'retrain_time.npy'), retrain_time)
                             np.save(os.path.join(args.save_dir, 'network_arch_params.npy'), param_values_list)
+            res["retrain_time"] = retrain_time
+            res["retrain_score"] = retrain_score
 
             print("\n------- Start Test --------")
-            test_scores = []
+            test_scores, test_times = [], []
             test_model = retrain_model
             test_time_start = default_timer()
             test_loss, test_score = evaluate(test_model, args.device, retrain_test_loader, loss, metric, retrain_n_test, fsd_epoch=200 if args.dataset == 'FSD' else None)
             test_time_end = default_timer()
             test_scores.append(test_score)
+            test_times.append((test_time_end - test_time_start))
 
             print("[test last]", "\ttime elapsed:", "%.4f" % (test_time_end - test_time_start), "\ttest loss:", "%.4f" % test_loss, "\ttest score:", "%.4f" % test_score)
 
@@ -295,9 +302,11 @@ def main():
             test_loss, test_score = evaluate(test_model, args.device, retrain_test_loader, loss, metric, retrain_n_test, fsd_epoch=200 if args.dataset == 'FSD' else None)
             test_time_end = default_timer()
             test_scores.append(test_score)
+            test_times.append((test_time_end - test_time_start))
 
             print("[test best-validated]", "\ttime elapsed:", "%.4f" % (test_time_end - test_time_start), "\ttest loss:", "%.4f" % test_loss, "\ttest score:", "%.4f" % test_score)
-            np.save(os.path.join(args.save_dir, 'test_score.npy'), test_scores)
+            res["test_time"] = test_times
+            res["test_score"] = test_scores
 
 
 def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, accum, temp, lr_sched_iter=False, min_lr=5e-6, scale_grad=False):
