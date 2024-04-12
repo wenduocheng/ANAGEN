@@ -6,6 +6,6 @@ def get_config():
         'dropout':[0.05],
         'weight_decay':[1e-5],
         'batch_size':32,
-        'data_path':'/home/ec2-user/automation/deepsea_train/'
+        'data_path':'/home/ec2-user/deepsea_filtered.npz'
     }
     return config

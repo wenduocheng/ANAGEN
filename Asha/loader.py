@@ -2,7 +2,7 @@ import torch
 import numpy as np
 def load_deepsea1(path, batch_size, one_hot = True, valid_split=-1,rc_aug=False, shift_aug=False):
     print(f'Loading the data')
-    filename = '/home/ec2-user/deepsea_filtered.npz'
+    filename = path
 
     data = np.load(filename)
 

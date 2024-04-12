@@ -23,6 +23,7 @@ import time
 
 config_set = get_config()
 epoch = config_set['epoch']
+path = config_set['data_path']
 
 import psutil
 import gc
@@ -49,7 +50,7 @@ def train_deepsea(config):
     model = get_model_result()
     model = model.to(DEVICE)
     # get data
-    data = load_deepsea1('path', 32, one_hot = True, valid_split=1,rc_aug=False, shift_aug=False)
+    data = load_deepsea1(path, 32, one_hot = True, valid_split=1,rc_aug=False, shift_aug=False)
     train_loader, valid_loader= data
 
     optimizer = get_optimizer(model.parameters(), config)
