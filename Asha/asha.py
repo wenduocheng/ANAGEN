@@ -13,8 +13,7 @@ import tempfile
 from ray.train import Checkpoint
 
 import os
-from model import get_model
-from dataloader import load_deepsea
+from model import get_model_result
 from loader import load_deepsea1
 from model_train import train_model
 from config import get_config
@@ -24,9 +23,6 @@ import time
 
 config_set = get_config()
 epoch = config_set['epoch']
-#data = load_deepsea(batch_size=config_set['batch_size'],path=config_set['data_path'], downsample=False)
-#data = load_deepsea1('path', 32, one_hot = True, valid_split=1,rc_aug=False, shift_aug=False)
-print(f'Loading finish.')
 
 import psutil
 import gc
@@ -50,15 +46,15 @@ def free_memory(threshold=20):
 
 def train_deepsea(config):
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model = get_model()
+    model = get_model_result()
     model = model.to(DEVICE)
     # get data
     data = load_deepsea1('path', 32, one_hot = True, valid_split=1,rc_aug=False, shift_aug=False)
-    #data = load_deepsea(batch_size=config_set['batch_size'],path=config_set['data_path'], downsample=False)
     train_loader, valid_loader= data
 
     optimizer = get_optimizer(model.parameters(), config)
     scheduler = CosineAnnealingLR(optimizer,T_max=20)
+    best_loss = float('+inf')
 
     for i in range(0,epoch):
         start_time = time.time()
@@ -72,14 +68,15 @@ def train_deepsea(config):
         
         with tempfile.TemporaryDirectory() as temp_checkpoint_dir:
             checkpoint = None
-            if (i + 1) % 5 == 0:
+            if valid_loss < best_loss:
+                best_loss = valid_loss
                 torch.save(
                     model.state_dict(),
-                    os.path.join(temp_checkpoint_dir, "model.pth")
+                    os.path.join(temp_checkpoint_dir, "best_model.pth")
                 )
                 checkpoint = Checkpoint.from_directory(temp_checkpoint_dir)
 
-            # Send the current training result back to Tune
+            
             train.report({"train_loss": train_loss,"valid_loss": valid_loss,"auroc":auroc,"aupr":aupr,"epoch_run_time":run_time}, checkpoint=checkpoint)
 
 
@@ -105,7 +102,7 @@ search_space = {
 
 # Uncomment this to enable distributed execution
 # init(address="auto")
-scheduler = ASHAScheduler(
+asha_scheduler = ASHAScheduler(
     metric="valid_loss",
     mode="min"
 )
@@ -121,18 +118,44 @@ runtime_env = {
         "RAY_memory_usage_threshold": "0.99"
      }
 }
-ray.init(runtime_env=runtime_env)
 
-analysis = tune.run(
-    train_deepsea, 
-    num_samples=20,
-    config=search_space, 
-    scheduler=scheduler,
-    resources_per_trial=resources_per_trial
+ray.init(runtime_env=runtime_env)
+trainable_with_resources = tune.with_resources(train_deepsea, resources_per_trial)
+tuner = tune.Tuner(
+    trainable_with_resources,
+    tune_config=tune.TuneConfig(scheduler=asha_scheduler),
+    param_space=search_space
 )
+results = tuner.fit()
+
+
 total_time_end = time.time()
 time_in_total = total_time_end-total_time_start
 
 print(f"Analysis done. Total time: {time_in_total}.")
 
+
+result_file_path = '/home/ec2-user/result.txt'
+
+with open(result_file_path, 'w') as result_file:
+    
+    best_result = results.get_best_result(metric="valid_loss", mode="min") 
+    best_config = best_result.config 
+    best_logdir = best_result.path 
+    best_checkpoint = best_result.checkpoint  
+    best_metrics = best_result.metrics   
+    
+    result_file.write("Total time of running: {}\n".format(time_in_total))
+    result_file.write("Best trial config: {}\n".format(best_config))
+    result_file.write("Best trial apth: {}\n".format(best_logdir))
+    result_file.write("Best trial metric: {}\n".format(best_metrics))
+    
+
+    for path, df in {result.path: result.metrics_dataframe for result in results}.items():
+        result_file.write("\nMetrics for trial {}:\n".format(path))
+        df_str = df.to_string(header=True, index=True)
+        result_file.write(df_str)
+        result_file.write("\n") 
+
+    print("Results saved to {}".format(result_file_path))
 
