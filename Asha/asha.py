@@ -16,13 +16,14 @@ import os
 from model import get_model_result
 from loader import load_deepsea1
 from model_train import train_model
-from config import get_config
+from config import configs
 from model_validate import validate_model
 import time
 
 
-config_set = get_config()
-epoch = config_set['epoch']
+config_set = configs()
+# epoch = config_set['epoch']
+epoch = 1
 path = config_set['data_path']
 
 import psutil
@@ -50,12 +51,13 @@ def train_deepsea(config):
     model = get_model_result()
     model = model.to(DEVICE)
     # get data
-    data = load_deepsea1(path, 32, one_hot = True, valid_split=1,rc_aug=False, shift_aug=False)
+    data = load_deepsea1(path, 64, one_hot = True, valid_split=1,rc_aug=False, shift_aug=False)
     train_loader, valid_loader= data
 
     optimizer = get_optimizer(model.parameters(), config)
     scheduler = CosineAnnealingLR(optimizer,T_max=20)
     best_loss = float('+inf')
+
 
     for i in range(0,epoch):
         start_time = time.time()
@@ -65,7 +67,7 @@ def train_deepsea(config):
         end_time = time.time()
         run_time = end_time - start_time
         
-        free_memory(80)
+        # free_memory(80)
         
         with tempfile.TemporaryDirectory() as temp_checkpoint_dir:
             checkpoint = None
@@ -113,14 +115,14 @@ resources_per_trial = {"cpu": 8, "gpu": 1}
 print(f'Start analysis.')
 total_time_start = time.time()
 
-runtime_env = {
-    'env_vars': {
-        "RAY_memory_monitor_refresh_ms": "0",
-        "RAY_memory_usage_threshold": "0.99"
-     }
-}
+# runtime_env = {
+#     'env_vars': {
+#         "RAY_memory_monitor_refresh_ms": "0",
+#         "RAY_memory_usage_threshold": "0.99"
+#      }
+# }
 
-ray.init(runtime_env=runtime_env)
+# ray.init(runtime_env=runtime_env)
 trainable_with_resources = tune.with_resources(train_deepsea, resources_per_trial)
 tuner = tune.Tuner(
     trainable_with_resources,
@@ -136,7 +138,7 @@ time_in_total = total_time_end-total_time_start
 print(f"Analysis done. Total time: {time_in_total}.")
 
 
-result_file_path = '/home/ec2-user/result.txt'
+result_file_path = './result.txt'
 
 with open(result_file_path, 'w') as result_file:
     

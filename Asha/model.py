@@ -4,6 +4,7 @@ import torch.nn as nn
 
 import torch.nn.functional as F
 from task_configs import get_config, get_model
+from config import configs
 
 class DeepSEA_Original(nn.Module):
     def __init__(self, ):
@@ -41,12 +42,13 @@ class DeepSEA_Original(nn.Module):
     
 def get_model_from_nas():
     print(f'Loading model from NAS result.')
-    nas_result = np.load("/home/ec2-user/automation/final_res.npz")
+    # nas_result = np.load("/home/ec2-user/automation/final_res.npz")
+    nas_result = np.load(configs()['dash_res_path'])
     ks = nas_result["kernel_choices"]
     ds = nas_result["dilation_choices"]
     dims, sample_shape, num_classes, batch_size, epochs_default, loss, lr, arch_lr, weight_decay, opt, arch_opt, weight_sched_search, weight_sched_train, accum, clip, retrain_clip, validation_freq, retrain_freq,\
     einsum, retrain_epochs, arch_default, kernel_choices_default, dilation_choices_default, quick_search, quick_retrain, config_kwargs = get_config(dataset="deepsea")
-    model = get_model(arch='wrn', sample_shape=sample_shape, num_classes=num_classes, config_kwargs=config_kwargs, ks=ks, ds=ks)
+    model = get_model(arch='wrn', sample_shape=sample_shape, num_classes=num_classes, config_kwargs=config_kwargs, ks=ks, ds=ds)
     return model
 
  

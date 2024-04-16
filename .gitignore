@@ -1,6 +1,7 @@
 *.mat
 *.npz
 *.npy
+logs
 __pycache__
 results_acc/
 relax/

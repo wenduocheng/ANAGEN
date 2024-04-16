@@ -1,11 +1,12 @@
-def get_config():
+def configs():
     config = {
-        'lr': [1e-2],
-        'epoch':1,
-        'optimizer':["Adam"],
-        'dropout':[0.05],
+        'lr': [1e-2,1e-3,1e-4],
+        # 'epoch':20,
+        'optimizer':["Adam","AdamW","SGD"],
+        'dropout':[0,0.2],
         'weight_decay':[1e-5],
-        'batch_size':32,
-        'data_path':'/home/ec2-user/deepsea_filtered.npz'
+        'batch_size':64,
+        'data_path':'/home/wenduoc/automation/automation/data/deepsea_filtered.npz',
+        'dash_res_path':"/home/wenduoc/automation/automation/Asha/final_res.npz"
     }
     return config
