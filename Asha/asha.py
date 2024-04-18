@@ -55,7 +55,7 @@ def train_deepsea(config):
 
     optimizer = get_optimizer(model.parameters(), config)
     scheduler = CosineAnnealingLR(optimizer,T_max=20)
-    best_loss = float('+inf')
+    best_auroc = float('-inf')
 
     for i in range(0,epoch):
         start_time = time.time()
@@ -69,8 +69,8 @@ def train_deepsea(config):
         
         with tempfile.TemporaryDirectory() as temp_checkpoint_dir:
             checkpoint = None
-            if valid_loss < best_loss:
-                best_loss = valid_loss
+            if auroc > best_auroc:
+                best_auroc = auroc
                 torch.save(
                     model.state_dict(),
                     os.path.join(temp_checkpoint_dir, "best_model.pth")
@@ -104,8 +104,8 @@ search_space = {
 # Uncomment this to enable distributed execution
 # init(address="auto")
 asha_scheduler = ASHAScheduler(
-    metric="valid_loss",
-    mode="min"
+    metric="auroc",
+    mode="max"
 )
 
 resources_per_trial = {"cpu": 8, "gpu": 1}
