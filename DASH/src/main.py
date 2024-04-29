@@ -307,7 +307,7 @@ def main():
             print("[test best-validated]", "\ttime elapsed:", "%.4f" % (test_time_end - test_time_start), "\ttest loss:", "%.4f" % test_loss, "\ttest score:", "%.4f" % test_score)
             res["test_time"] = test_times
             res["test_score"] = test_scores
-
+    np.savez(os.path.join(args.save_dir, 'final_res.npz')), **res)        
 
 def train_one_epoch(model, optimizer, scheduler, device, loader, loss, clip, accum, temp, lr_sched_iter=False, min_lr=5e-6, scale_grad=False):
     
