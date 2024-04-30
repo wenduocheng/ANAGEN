@@ -101,8 +101,7 @@ search_space = {
     "weight_decay": tune.grid_search(config_set['weight_decay'])
 }
 
-# Uncomment this to enable distributed execution
-# init(address="auto")
+
 asha_scheduler = ASHAScheduler(
     metric="auroc",
     mode="max"
