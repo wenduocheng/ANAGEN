@@ -1,10 +1,18 @@
 import torch
 import numpy as np
+import os
+import requests
+
 def load_deepsea1(path, batch_size, one_hot = True, valid_split=-1,rc_aug=False, shift_aug=False):
     print(f'Loading the data')
     filename = path
 
+    if not os.path.isfile(filename):
+        with open(filename, 'wb') as f:
+            f.write(requests.get("https://pde-xd.s3.amazonaws.com/deepsea/deepsea_filtered.npz").content)
+
     data = np.load(filename)
+
 
     if valid_split > 0:
         if one_hot:
@@ -36,4 +44,3 @@ def load_deepsea1(path, batch_size, one_hot = True, valid_split=-1,rc_aug=False,
         val_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_val, y_val), batch_size = batch_size, shuffle=True, num_workers=4, pin_memory=True)
     
     return train_loader,val_loader
-
