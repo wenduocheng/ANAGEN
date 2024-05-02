@@ -3,6 +3,7 @@
 Here are the steps of running ANAGEN on the NAS-BENCH-360 DeepSEA task:
 
 1.Install Packages
+
 conda create --name ANAGEN
 conda activate ANAGEN
 conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cudatoolkit=10.1 -c pytorch
