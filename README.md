@@ -36,6 +36,8 @@ python asha.py
 
 6.Retrain
 
+cd baseline
+
 python pretrain_embedder.py
 
 7.Analysis
