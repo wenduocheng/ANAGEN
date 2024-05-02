@@ -1,0 +1,121 @@
+True
+device: cuda
+{'weight': 'resnet', 'one_hot': True, 'lr': 0.001, 'optimizer': 'Adam', 'weight_decay': 1e-05, 'batch_size': 256, 'epochs': 100, 'channels': [16, 32, 64], 'drop_out': 0.2}
+stack num: 20
+x: torch.Size([256, 4, 1000])
+y: torch.Size([256, 36])
+
+------- Start Training --------
+Traceback (most recent call last):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+[train full 0 0.001000 ] time elapsed: 52.5152 	train loss: 0.8259 	val loss: 0.8599 	val score: 0.3601 	best val score: 0.3601
+[train full 1 0.001000 ] time elapsed: 43.4692 	train loss: 0.8095 	val loss: 0.8390 	val score: 0.3475 	best val score: 0.3475
+[train full 2 0.001000 ] time elapsed: 43.0837 	train loss: 0.7863 	val loss: 0.8327 	val score: 0.3097 	best val score: 0.3097
+[train full 3 0.001000 ] time elapsed: 42.2943 	train loss: 0.7703 	val loss: 0.8578 	val score: 0.3046 	best val score: 0.3046
+[train full 4 0.001000 ] time elapsed: 42.3011 	train loss: 0.7615 	val loss: 0.8581 	val score: 0.2943 	best val score: 0.2943
+[train full 5 0.001000 ] time elapsed: 42.3907 	train loss: 0.7520 	val loss: 0.7600 	val score: 0.2756 	best val score: 0.2756
+[train full 6 0.001000 ] time elapsed: 47.2937 	train loss: 0.7468 	val loss: 0.7648 	val score: 0.2762 	best val score: 0.2756
+[train full 7 0.001000 ] time elapsed: 42.5503 	train loss: 0.7406 	val loss: 0.7551 	val score: 0.2748 	best val score: 0.2748
+[train full 8 0.001000 ] time elapsed: 42.2676 	train loss: 0.7390 	val loss: 0.7887 	val score: 0.2904 	best val score: 0.2748
+[train full 9 0.001000 ] time elapsed: 43.3019 	train loss: 0.7299 	val loss: 0.7638 	val score: 0.2731 	best val score: 0.2731
+[train full 10 0.001000 ] time elapsed: 42.3210 	train loss: 0.7241 	val loss: 0.7774 	val score: 0.2771 	best val score: 0.2731
+[train full 11 0.001000 ] time elapsed: 42.9376 	train loss: 0.7177 	val loss: 0.7738 	val score: 0.2706 	best val score: 0.2706
+[train full 12 0.001000 ] time elapsed: 42.3782 	train loss: 0.7115 	val loss: 0.7712 	val score: 0.2700 	best val score: 0.2700
+[train full 13 0.001000 ] time elapsed: 42.3579 	train loss: 0.7066 	val loss: 0.7675 	val score: 0.2679 	best val score: 0.2679
+[train full 14 0.001000 ] time elapsed: 42.2698 	train loss: 0.7024 	val loss: 0.7652 	val score: 0.2717 	best val score: 0.2679
+[train full 15 0.001000 ] time elapsed: 42.4885 	train loss: 0.7021 	val loss: 0.7831 	val score: 0.2841 	best val score: 0.2679
+[train full 16 0.001000 ] time elapsed: 43.1534 	train loss: 0.6952 	val loss: 0.7487 	val score: 0.2619 	best val score: 0.2619
+[train full 17 0.001000 ] time elapsed: 43.1966 	train loss: 0.6916 	val loss: 0.7730 	val score: 0.2605 	best val score: 0.2605
+[train full 18 0.001000 ] time elapsed: 42.2586 	train loss: 0.6863 	val loss: 0.7583 	val score: 0.2634 	best val score: 0.2605
+[train full 19 0.001000 ] time elapsed: 43.3391 	train loss: 0.6835 	val loss: 0.7747 	val score: 0.2711 	best val score: 0.2605
+[train full 20 0.001000 ] time elapsed: 43.2622 	train loss: 0.6797 	val loss: 0.7875 	val score: 0.2637 	best val score: 0.2605
+[train full 21 0.001000 ] time elapsed: 43.6452 	train loss: 0.6769 	val loss: 0.7679 	val score: 0.2697 	best val score: 0.2605
+[train full 22 0.001000 ] time elapsed: 42.2526 	train loss: 0.6725 	val loss: 0.7728 	val score: 0.2625 	best val score: 0.2605
+[train full 23 0.001000 ] time elapsed: 42.3544 	train loss: 0.6694 	val loss: 0.7471 	val score: 0.2574 	best val score: 0.2574
+[train full 24 0.001000 ] time elapsed: 42.5922 	train loss: 0.6679 	val loss: 0.7843 	val score: 0.2653 	best val score: 0.2574
+[train full 25 0.001000 ] time elapsed: 44.6994 	train loss: 0.6633 	val loss: 0.7636 	val score: 0.2552 	best val score: 0.2552
+[train full 26 0.001000 ] time elapsed: 45.3289 	train loss: 0.6612 	val loss: 0.7829 	val score: 0.2579 	best val score: 0.2552
+[train full 27 0.001000 ] time elapsed: 42.6373 	train loss: 0.6576 	val loss: 0.7830 	val score: 0.2674 	best val score: 0.2552
+[train full 28 0.001000 ] time elapsed: 42.3743 	train loss: 0.6552 	val loss: 0.7800 	val score: 0.2591 	best val score: 0.2552
+[train full 29 0.001000 ] time elapsed: 46.7065 	train loss: 0.6538 	val loss: 0.7599 	val score: 0.2561 	best val score: 0.2552
+[train full 30 0.000200 ] time elapsed: 59.5173 	train loss: 0.6516 	val loss: 0.8510 	val score: 0.2685 	best val score: 0.2552
+[train full 31 0.000200 ] time elapsed: 43.9256 	train loss: 0.6374 	val loss: 0.7458 	val score: 0.2513 	best val score: 0.2513
+[train full 32 0.000200 ] time elapsed: 42.1690 	train loss: 0.6329 	val loss: 0.7594 	val score: 0.2544 	best val score: 0.2513
+[train full 33 0.000200 ] time elapsed: 42.6992 	train loss: 0.6316 	val loss: 0.7677 	val score: 0.2532 	best val score: 0.2513
+[train full 34 0.000200 ] time elapsed: 42.1806 	train loss: 0.6270 	val loss: 0.7636 	val score: 0.2563 	best val score: 0.2513
+[train full 35 0.000200 ] time elapsed: 44.7720 	train loss: 0.6242 	val loss: 0.7548 	val score: 0.2529 	best val score: 0.2513
+[train full 36 0.000200 ] time elapsed: 42.1816 	train loss: 0.6240 	val loss: 0.7836 	val score: 0.2543 	best val score: 0.2513
+[train full 37 0.000200 ] time elapsed: 42.1987 	train loss: 0.6227 	val loss: 0.8083 	val score: 0.2620 	best val score: 0.2513
+[train full 38 0.000200 ] time elapsed: 45.4636 	train loss: 0.6200 	val loss: 0.7878 	val score: 0.2537 	best val score: 0.2513
+[train full 39 0.000200 ] time elapsed: 43.8189 	train loss: 0.6191 	val loss: 0.7894 	val score: 0.2626 	best val score: 0.2513
+[train full 40 0.000200 ] time elapsed: 42.1892 	train loss: 0.6193 	val loss: 0.8081 	val score: 0.2568 	best val score: 0.2513
+[train full 41 0.000200 ] time elapsed: 43.8588 	train loss: 0.6170 	val loss: 0.7811 	val score: 0.2557 	best val score: 0.2513
+[train full 42 0.000200 ] time elapsed: 42.1812 	train loss: 0.6161 	val loss: 0.7736 	val score: 0.2534 	best val score: 0.2513
+[train full 43 0.000200 ] time elapsed: 43.2431 	train loss: 0.6144 	val loss: 0.7659 	val score: 0.2518 	best val score: 0.2513
+[train full 44 0.000200 ] time elapsed: 43.0306 	train loss: 0.6150 	val loss: 0.7704 	val score: 0.2519 	best val score: 0.2513
+[train full 45 0.000200 ] time elapsed: 44.0583 	train loss: 0.6141 	val loss: 0.7900 	val score: 0.2492 	best val score: 0.2492
+[train full 46 0.000200 ] time elapsed: 43.1954 	train loss: 0.6114 	val loss: 0.7735 	val score: 0.2492 	best val score: 0.2492
+[train full 47 0.000200 ] time elapsed: 42.1769 	train loss: 0.6124 	val loss: 0.7837 	val score: 0.2552 	best val score: 0.2492
+[train full 48 0.000200 ] time elapsed: 42.2054 	train loss: 0.6100 	val loss: 0.7861 	val score: 0.2542 	best val score: 0.2492
+[train full 49 0.000200 ] time elapsed: 42.8195 	train loss: 0.6124 	val loss: 0.8054 	val score: 0.2603 	best val score: 0.2492
+[train full 50 0.000200 ] time elapsed: 42.1670 	train loss: 0.6089 	val loss: 0.8073 	val score: 0.2567 	best val score: 0.2492
+[train full 51 0.000200 ] time elapsed: 42.6022 	train loss: 0.6072 	val loss: 0.8022 	val score: 0.2556 	best val score: 0.2492
+[train full 52 0.000200 ] time elapsed: 42.2472 	train loss: 0.6067 	val loss: 0.7846 	val score: 0.2582 	best val score: 0.2492
+[train full 53 0.000200 ] time elapsed: 42.2020 	train loss: 0.6067 	val loss: 0.7729 	val score: 0.2520 	best val score: 0.2492
+[train full 54 0.000200 ] time elapsed: 42.6236 	train loss: 0.6055 	val loss: 0.7908 	val score: 0.2615 	best val score: 0.2492
+[train full 55 0.000200 ] time elapsed: 43.2199 	train loss: 0.6052 	val loss: 0.7630 	val score: 0.2509 	best val score: 0.2492
+[train full 56 0.000200 ] time elapsed: 42.1891 	train loss: 0.6035 	val loss: 0.8043 	val score: 0.2578 	best val score: 0.2492
+[train full 57 0.000200 ] time elapsed: 43.2440 	train loss: 0.6031 	val loss: 0.7706 	val score: 0.2521 	best val score: 0.2492
+[train full 58 0.000200 ] time elapsed: 42.4143 	train loss: 0.6028 	val loss: 0.7853 	val score: 0.2518 	best val score: 0.2492
+[train full 59 0.000200 ] time elapsed: 43.0441 	train loss: 0.6018 	val loss: 0.8094 	val score: 0.2553 	best val score: 0.2492
+[train full 60 0.000040 ] time elapsed: 44.2940 	train loss: 0.6037 	val loss: 0.7778 	val score: 0.2510 	best val score: 0.2492
+[train full 61 0.000040 ] time elapsed: 43.0334 	train loss: 0.5978 	val loss: 0.7800 	val score: 0.2505 	best val score: 0.2492
+[train full 62 0.000040 ] time elapsed: 44.3018 	train loss: 0.5969 	val loss: 0.7766 	val score: 0.2510 	best val score: 0.2492
+[train full 63 0.000040 ] time elapsed: 42.2056 	train loss: 0.5944 	val loss: 0.7832 	val score: 0.2505 	best val score: 0.2492
+[train full 64 0.000040 ] time elapsed: 42.1890 	train loss: 0.5958 	val loss: 0.7945 	val score: 0.2515 	best val score: 0.2492
+[train full 65 0.000040 ] time elapsed: 45.1464 	train loss: 0.5952 	val loss: 0.7951 	val score: 0.2525 	best val score: 0.2492
+[train full 66 0.000040 ] time elapsed: 44.2626 	train loss: 0.5932 	val loss: 0.7858 	val score: 0.2546 	best val score: 0.2492
+[train full 67 0.000040 ] time elapsed: 43.4276 	train loss: 0.5936 	val loss: 0.7839 	val score: 0.2511 	best val score: 0.2492
+[train full 68 0.000040 ] time elapsed: 42.1627 	train loss: 0.5935 	val loss: 0.8072 	val score: 0.2517 	best val score: 0.2492
+[train full 69 0.000040 ] time elapsed: 42.1785 	train loss: 0.5928 	val loss: 0.8021 	val score: 0.2525 	best val score: 0.2492
+[train full 70 0.000040 ] time elapsed: 43.8432 	train loss: 0.5921 	val loss: 0.7967 	val score: 0.2507 	best val score: 0.2492
+[train full 71 0.000040 ] time elapsed: 43.8502 	train loss: 0.5917 	val loss: 0.8082 	val score: 0.2534 	best val score: 0.2492
+[train full 72 0.000040 ] time elapsed: 42.3783 	train loss: 0.5911 	val loss: 0.8009 	val score: 0.2540 	best val score: 0.2492
+[train full 73 0.000040 ] time elapsed: 42.5895 	train loss: 0.5911 	val loss: 0.8031 	val score: 0.2523 	best val score: 0.2492
+[train full 74 0.000040 ] time elapsed: 42.1687 	train loss: 0.5909 	val loss: 0.8077 	val score: 0.2508 	best val score: 0.2492
+[train full 75 0.000040 ] time elapsed: 43.4281 	train loss: 0.5917 	val loss: 0.7994 	val score: 0.2511 	best val score: 0.2492
+[train full 76 0.000040 ] time elapsed: 43.2132 	train loss: 0.5918 	val loss: 0.8210 	val score: 0.2515 	best val score: 0.2492
+[train full 77 0.000040 ] time elapsed: 43.6266 	train loss: 0.5907 	val loss: 0.8009 	val score: 0.2519 	best val score: 0.2492
+[train full 78 0.000040 ] time elapsed: 43.0054 	train loss: 0.5902 	val loss: 0.7973 	val score: 0.2515 	best val score: 0.2492
+[train full 79 0.000040 ] time elapsed: 43.9351 	train loss: 0.5901 	val loss: 0.8038 	val score: 0.2510 	best val score: 0.2492
+[train full 80 0.000040 ] time elapsed: 42.1816 	train loss: 0.5920 	val loss: 0.8217 	val score: 0.2529 	best val score: 0.2492
+[train full 81 0.000040 ] time elapsed: 43.2404 	train loss: 0.5890 	val loss: 0.8059 	val score: 0.2493 	best val score: 0.2492
+[train full 82 0.000040 ] time elapsed: 42.1790 	train loss: 0.5888 	val loss: 0.8119 	val score: 0.2522 	best val score: 0.2492
+[train full 83 0.000040 ] time elapsed: 42.1716 	train loss: 0.5894 	val loss: 0.8162 	val score: 0.2531 	best val score: 0.2492
+[train full 84 0.000040 ] time elapsed: 43.0111 	train loss: 0.5904 	val loss: 0.8113 	val score: 0.2502 	best val score: 0.2492
+[train full 85 0.000040 ] time elapsed: 44.8834 	train loss: 0.5896 	val loss: 0.8284 	val score: 0.2537 	best val score: 0.2492
+[train full 86 0.000040 ] time elapsed: 45.0973 	train loss: 0.5901 	val loss: 0.8348 	val score: 0.2529 	best val score: 0.2492
+[train full 87 0.000040 ] time elapsed: 43.7895 	train loss: 0.5886 	val loss: 0.8036 	val score: 0.2555 	best val score: 0.2492
+[train full 88 0.000040 ] time elapsed: 43.3592 	train loss: 0.5894 	val loss: 0.8027 	val score: 0.2517 	best val score: 0.2492
+[train full 89 0.000040 ] time elapsed: 44.2560 	train loss: 0.5920 	val loss: 0.8245 	val score: 0.2538 	best val score: 0.2492
+[train full 90 0.000008 ] time elapsed: 45.2573 	train loss: 0.5883 	val loss: 0.8040 	val score: 0.2539 	best val score: 0.2492
+[train full 91 0.000008 ] time elapsed: 44.8623 	train loss: 0.5869 	val loss: 0.7980 	val score: 0.2518 	best val score: 0.2492
+[train full 92 0.000008 ] time elapsed: 42.4292 	train loss: 0.5859 	val loss: 0.8039 	val score: 0.2515 	best val score: 0.2492
+[train full 93 0.000008 ] time elapsed: 89.8523 	train loss: 0.5877 	val loss: 0.8100 	val score: 0.2530 	best val score: 0.2492
+[train full 94 0.000008 ] time elapsed: 42.4751 	train loss: 0.5865 	val loss: 0.8047 	val score: 0.2525 	best val score: 0.2492
+[train full 95 0.000008 ] time elapsed: 44.5318 	train loss: 0.5878 	val loss: 0.8136 	val score: 0.2530 	best val score: 0.2492
+[train full 96 0.000008 ] time elapsed: 43.0900 	train loss: 0.5863 	val loss: 0.8015 	val score: 0.2524 	best val score: 0.2492
+[train full 97 0.000008 ] time elapsed: 44.0608 	train loss: 0.5863 	val loss: 0.8065 	val score: 0.2525 	best val score: 0.2492
+[train full 98 0.000008 ] time elapsed: 43.6218 	train loss: 0.5862 	val loss: 0.8068 	val score: 0.2515 	best val score: 0.2492
+[train full 99 0.000008 ] time elapsed: 42.7486 	train loss: 0.5861 	val loss: 0.8079 	val score: 0.2515 	best val score: 0.2492
+
+------- Start Test --------
+[test last] 	time elapsed: 48.3462 	test loss: 0.8079 	test score: 0.2515 	second test score: 0.6766

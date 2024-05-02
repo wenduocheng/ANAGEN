@@ -1,0 +1,56 @@
+True
+device: cuda
+{'weight': 'nas-deepsea', 'one_hot': True, 'lr': 0.01, 'batch_size': 256, 'epochs': 100, 'channels': [16, 32, 64], 'drop_out': 0.2}
+NAS_DeepSEA(
+  (Conv1): Conv1d(4, 320, kernel_size=(8,), stride=(1,), padding=(4,))
+  (Conv2): Conv1d(320, 480, kernel_size=(8,), stride=(1,), padding=(4,))
+  (Conv3): Conv1d(480, 960, kernel_size=(8,), stride=(1,), padding=(4,))
+  (Maxpool): MaxPool1d(kernel_size=4, stride=4, padding=0, dilation=1, ceil_mode=False)
+  (Drop1): Dropout(p=0.2, inplace=False)
+  (Drop2): Dropout(p=0.5, inplace=False)
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (Linear1): Linear(in_features=60480, out_features=925, bias=True)
+  (Linear2): Linear(in_features=925, out_features=36, bias=True)
+)
+x: torch.Size([256, 4, 1000])
+y: torch.Size([256, 36])
+
+------- Start Training --------
+Traceback (most recent call last):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+[train full 0 0.010000 ] time elapsed: 14.6114 	train loss: 15.1505 	val loss: 14.6543 	val score: 0.4344 	best val score: 0.4344
+/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+[train full 1 0.010000 ] time elapsed: 13.6599 	train loss: 15.0709 	val loss: 14.6553 	val score: 0.4352 	best val score: 0.4344
+/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+[train full 2 0.010000 ] time elapsed: 15.1541 	train loss: 15.1090 	val loss: 14.6453 	val score: 0.4367 	best val score: 0.4344
+/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+[train full 3 0.010000 ] time elapsed: 17.4654 	train loss: 15.1043 	val loss: 14.6185 	val score: 0.4330 	best val score: 0.4330
+/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+[train full 4 0.010000 ] time elapsed: 13.7033 	train loss: 15.0623 	val loss: 14.6230 	val score: 0.4334 	best val score: 0.4330
+/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+[train full 5 0.010000 ] time elapsed: 13.7347 	train loss: 14.9422 	val loss: 14.5845 	val score: 0.4245 	best val score: 0.4245
+Traceback (most recent call last):
+  File "pretrain_embedder.py", line 503, in <module>
+    torch.save({'model_state_dict':model.state_dict(),
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/serialization.py", line 618, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/serialization.py", line 492, in _open_zipfile_writer
+    return container(name_or_buffer)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/serialization.py", line 463, in __init__
+    super().__init__(torch._C.PyTorchFileWriter(self.name))
+KeyboardInterrupt

@@ -1,0 +1,212 @@
+True
+device: cuda
+{'weight': 'unet', 'one_hot': True, 'lr': 0.001, 'batch_size': 256, 'epochs': 100, 'channels': [16, 32, 32, 64, 64], 'drop_out': 0.2}
+Encoder_v2(
+  (model): Sequential(
+    (0): Conv1d(4, 16, kernel_size=(31,), stride=(1,), padding=(15,))
+    (1): ResnetBlock(
+      (norm1): GroupNorm(16, 16, eps=1e-06, affine=True)
+      (conv1): Conv1d(16, 32, kernel_size=(9,), stride=(1,), padding=(4,))
+      (norm2): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      (nin_shortcut): Conv1d(16, 32, kernel_size=(1,), stride=(1,))
+    )
+    (2): ResnetBlock(
+      (norm1): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (conv1): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (3): ResnetBlock(
+      (norm1): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (conv1): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (4): ResnetBlock(
+      (norm1): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (conv1): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (5): ResnetBlock(
+      (norm1): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (conv1): Conv1d(32, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (nin_shortcut): Conv1d(32, 64, kernel_size=(1,), stride=(1,))
+    )
+    (6): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (7): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (8): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (9): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (10): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (11): GroupNorm(16, 64, eps=1e-06, affine=True)
+    (12): Swish()
+    (13): Conv1d(64, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+  )
+  (final): Linear(in_features=128000, out_features=36, bias=True)
+)
+x: torch.Size([256, 4, 1000])
+y: torch.Size([256, 36])
+
+------- Start Training --------
+Traceback (most recent call last):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+[train full 0 0.001000 ] time elapsed: 43.5078 	train loss: 0.8704 	val loss: 0.8499 	val score: 0.4435 	best val score: 0.4435
+[train full 1 0.001000 ] time elapsed: 25.5863 	train loss: 0.8489 	val loss: 0.8330 	val score: 0.3945 	best val score: 0.3945
+[train full 2 0.001000 ] time elapsed: 26.2481 	train loss: 0.8299 	val loss: 0.8219 	val score: 0.3763 	best val score: 0.3763
+[train full 3 0.001000 ] time elapsed: 27.1476 	train loss: 0.8236 	val loss: 0.8341 	val score: 0.3744 	best val score: 0.3744
+[train full 4 0.001000 ] time elapsed: 26.8726 	train loss: 0.8179 	val loss: 0.8235 	val score: 0.3734 	best val score: 0.3734
+[train full 5 0.001000 ] time elapsed: 27.4123 	train loss: 0.8138 	val loss: 0.8224 	val score: 0.3735 	best val score: 0.3734
+[train full 6 0.001000 ] time elapsed: 27.3294 	train loss: 0.8104 	val loss: 0.8235 	val score: 0.3733 	best val score: 0.3733
+[train full 7 0.001000 ] time elapsed: 24.9486 	train loss: 0.8094 	val loss: 0.8251 	val score: 0.3736 	best val score: 0.3733
+[train full 8 0.001000 ] time elapsed: 25.7964 	train loss: 0.8040 	val loss: 0.8235 	val score: 0.3746 	best val score: 0.3733
+[train full 9 0.001000 ] time elapsed: 27.9991 	train loss: 0.7999 	val loss: 0.8271 	val score: 0.3741 	best val score: 0.3733
+[train full 10 0.001000 ] time elapsed: 26.9715 	train loss: 0.7969 	val loss: 0.8254 	val score: 0.3748 	best val score: 0.3733
+[train full 11 0.001000 ] time elapsed: 29.0066 	train loss: 0.7934 	val loss: 0.8352 	val score: 0.3754 	best val score: 0.3733
+[train full 12 0.001000 ] time elapsed: 31.6596 	train loss: 0.7904 	val loss: 0.8306 	val score: 0.3759 	best val score: 0.3733
+[train full 13 0.001000 ] time elapsed: 25.9489 	train loss: 0.7885 	val loss: 0.8554 	val score: 0.3769 	best val score: 0.3733
+[train full 14 0.001000 ] time elapsed: 26.0476 	train loss: 0.7854 	val loss: 0.8319 	val score: 0.3772 	best val score: 0.3733
+[train full 15 0.001000 ] time elapsed: 25.7706 	train loss: 0.7802 	val loss: 0.8319 	val score: 0.3785 	best val score: 0.3733
+[train full 16 0.001000 ] time elapsed: 27.8410 	train loss: 0.7773 	val loss: 0.8356 	val score: 0.3778 	best val score: 0.3733
+[train full 17 0.001000 ] time elapsed: 29.7940 	train loss: 0.7726 	val loss: 0.8352 	val score: 0.3794 	best val score: 0.3733
+[train full 18 0.001000 ] time elapsed: 26.6154 	train loss: 0.7707 	val loss: 0.8372 	val score: 0.3801 	best val score: 0.3733
+[train full 19 0.001000 ] time elapsed: 29.3125 	train loss: 0.7659 	val loss: 0.8408 	val score: 0.3814 	best val score: 0.3733
+[train full 20 0.001000 ] time elapsed: 28.3223 	train loss: 0.7642 	val loss: 0.8422 	val score: 0.3812 	best val score: 0.3733
+[train full 21 0.001000 ] time elapsed: 26.6475 	train loss: 0.7598 	val loss: 0.8466 	val score: 0.3804 	best val score: 0.3733
+[train full 22 0.001000 ] time elapsed: 25.7748 	train loss: 0.7563 	val loss: 0.8454 	val score: 0.3822 	best val score: 0.3733
+[train full 23 0.001000 ] time elapsed: 28.1658 	train loss: 0.7521 	val loss: 0.8474 	val score: 0.3834 	best val score: 0.3733
+[train full 24 0.001000 ] time elapsed: 29.7425 	train loss: 0.7489 	val loss: 0.8494 	val score: 0.3835 	best val score: 0.3733
+[train full 25 0.001000 ] time elapsed: 27.7246 	train loss: 0.7460 	val loss: 0.8510 	val score: 0.3842 	best val score: 0.3733
+[train full 26 0.001000 ] time elapsed: 28.1060 	train loss: 0.7419 	val loss: 0.8574 	val score: 0.3848 	best val score: 0.3733
+[train full 27 0.001000 ] time elapsed: 27.5827 	train loss: 0.7385 	val loss: 0.8542 	val score: 0.3850 	best val score: 0.3733
+[train full 28 0.001000 ] time elapsed: 26.5400 	train loss: 0.7359 	val loss: 0.8591 	val score: 0.3843 	best val score: 0.3733
+[train full 29 0.001000 ] time elapsed: 24.9950 	train loss: 0.7323 	val loss: 0.8580 	val score: 0.3858 	best val score: 0.3733
+[train full 30 0.000200 ] time elapsed: 26.8181 	train loss: 0.7308 	val loss: 0.8625 	val score: 0.3862 	best val score: 0.3733
+[train full 31 0.000200 ] time elapsed: 26.7774 	train loss: 0.7218 	val loss: 0.8611 	val score: 0.3864 	best val score: 0.3733
+[train full 32 0.000200 ] time elapsed: 27.2996 	train loss: 0.7223 	val loss: 0.8613 	val score: 0.3863 	best val score: 0.3733
+[train full 33 0.000200 ] time elapsed: 26.8221 	train loss: 0.7200 	val loss: 0.8620 	val score: 0.3865 	best val score: 0.3733
+[train full 34 0.000200 ] time elapsed: 25.9310 	train loss: 0.7198 	val loss: 0.8628 	val score: 0.3869 	best val score: 0.3733
+[train full 35 0.000200 ] time elapsed: 28.3275 	train loss: 0.7197 	val loss: 0.8628 	val score: 0.3863 	best val score: 0.3733
+[train full 36 0.000200 ] time elapsed: 27.1457 	train loss: 0.7176 	val loss: 0.8630 	val score: 0.3868 	best val score: 0.3733
+[train full 37 0.000200 ] time elapsed: 26.6194 	train loss: 0.7181 	val loss: 0.8637 	val score: 0.3870 	best val score: 0.3733
+[train full 38 0.000200 ] time elapsed: 27.3222 	train loss: 0.7184 	val loss: 0.8643 	val score: 0.3872 	best val score: 0.3733
+[train full 39 0.000200 ] time elapsed: 26.5789 	train loss: 0.7173 	val loss: 0.8651 	val score: 0.3873 	best val score: 0.3733
+[train full 40 0.000200 ] time elapsed: 25.9880 	train loss: 0.7156 	val loss: 0.8647 	val score: 0.3870 	best val score: 0.3733
+[train full 41 0.000200 ] time elapsed: 26.1506 	train loss: 0.7155 	val loss: 0.8659 	val score: 0.3875 	best val score: 0.3733
+[train full 42 0.000200 ] time elapsed: 27.0109 	train loss: 0.7135 	val loss: 0.8660 	val score: 0.3874 	best val score: 0.3733
+[train full 43 0.000200 ] time elapsed: 28.1341 	train loss: 0.7141 	val loss: 0.8665 	val score: 0.3875 	best val score: 0.3733
+[train full 44 0.000200 ] time elapsed: 29.7869 	train loss: 0.7127 	val loss: 0.8670 	val score: 0.3880 	best val score: 0.3733
+[train full 45 0.000200 ] time elapsed: 26.1973 	train loss: 0.7112 	val loss: 0.8672 	val score: 0.3874 	best val score: 0.3733
+[train full 46 0.000200 ] time elapsed: 29.1819 	train loss: 0.7110 	val loss: 0.8677 	val score: 0.3878 	best val score: 0.3733
+[train full 47 0.000200 ] time elapsed: 28.3310 	train loss: 0.7112 	val loss: 0.8681 	val score: 0.3877 	best val score: 0.3733
+[train full 48 0.000200 ] time elapsed: 26.8173 	train loss: 0.7092 	val loss: 0.8692 	val score: 0.3882 	best val score: 0.3733
+[train full 49 0.000200 ] time elapsed: 28.5654 	train loss: 0.7086 	val loss: 0.8691 	val score: 0.3877 	best val score: 0.3733
+[train full 50 0.000200 ] time elapsed: 26.0553 	train loss: 0.7081 	val loss: 0.8698 	val score: 0.3883 	best val score: 0.3733
+[train full 51 0.000200 ] time elapsed: 24.9747 	train loss: 0.7082 	val loss: 0.8706 	val score: 0.3882 	best val score: 0.3733
+[train full 52 0.000200 ] time elapsed: 26.0143 	train loss: 0.7074 	val loss: 0.8711 	val score: 0.3886 	best val score: 0.3733
+[train full 53 0.000200 ] time elapsed: 25.7605 	train loss: 0.7062 	val loss: 0.8711 	val score: 0.3883 	best val score: 0.3733
+[train full 54 0.000200 ] time elapsed: 26.5467 	train loss: 0.7059 	val loss: 0.8714 	val score: 0.3882 	best val score: 0.3733
+[train full 55 0.000200 ] time elapsed: 26.4469 	train loss: 0.7066 	val loss: 0.8717 	val score: 0.3882 	best val score: 0.3733
+[train full 56 0.000200 ] time elapsed: 25.5837 	train loss: 0.7047 	val loss: 0.8724 	val score: 0.3891 	best val score: 0.3733
+[train full 57 0.000200 ] time elapsed: 27.6505 	train loss: 0.7042 	val loss: 0.8724 	val score: 0.3888 	best val score: 0.3733
+[train full 58 0.000200 ] time elapsed: 27.0225 	train loss: 0.7030 	val loss: 0.8728 	val score: 0.3891 	best val score: 0.3733
+[train full 59 0.000200 ] time elapsed: 29.4187 	train loss: 0.7020 	val loss: 0.8737 	val score: 0.3890 	best val score: 0.3733
+[train full 60 0.000040 ] time elapsed: 28.7149 	train loss: 0.7028 	val loss: 0.8738 	val score: 0.3891 	best val score: 0.3733
+[train full 61 0.000040 ] time elapsed: 27.2536 	train loss: 0.6994 	val loss: 0.8743 	val score: 0.3891 	best val score: 0.3733
+[train full 62 0.000040 ] time elapsed: 29.3326 	train loss: 0.6992 	val loss: 0.8744 	val score: 0.3892 	best val score: 0.3733
+[train full 63 0.000040 ] time elapsed: 27.9753 	train loss: 0.7013 	val loss: 0.8741 	val score: 0.3891 	best val score: 0.3733
+[train full 64 0.000040 ] time elapsed: 31.0883 	train loss: 0.6997 	val loss: 0.8746 	val score: 0.3893 	best val score: 0.3733
+[train full 65 0.000040 ] time elapsed: 25.2302 	train loss: 0.7006 	val loss: 0.8742 	val score: 0.3892 	best val score: 0.3733
+[train full 66 0.000040 ] time elapsed: 26.6898 	train loss: 0.6995 	val loss: 0.8747 	val score: 0.3894 	best val score: 0.3733
+[train full 67 0.000040 ] time elapsed: 26.0333 	train loss: 0.6977 	val loss: 0.8747 	val score: 0.3894 	best val score: 0.3733
+[train full 68 0.000040 ] time elapsed: 25.1685 	train loss: 0.6992 	val loss: 0.8750 	val score: 0.3894 	best val score: 0.3733
+[train full 69 0.000040 ] time elapsed: 26.7032 	train loss: 0.6992 	val loss: 0.8744 	val score: 0.3891 	best val score: 0.3733
+[train full 70 0.000040 ] time elapsed: 26.1998 	train loss: 0.6990 	val loss: 0.8750 	val score: 0.3895 	best val score: 0.3733
+[train full 71 0.000040 ] time elapsed: 27.2088 	train loss: 0.7028 	val loss: 0.8750 	val score: 0.3895 	best val score: 0.3733
+[train full 72 0.000040 ] time elapsed: 28.4426 	train loss: 0.6990 	val loss: 0.8752 	val score: 0.3896 	best val score: 0.3733
+[train full 73 0.000040 ] time elapsed: 28.7563 	train loss: 0.6980 	val loss: 0.8751 	val score: 0.3896 	best val score: 0.3733
+[train full 74 0.000040 ] time elapsed: 28.2153 	train loss: 0.6977 	val loss: 0.8754 	val score: 0.3896 	best val score: 0.3733
+[train full 75 0.000040 ] time elapsed: 29.6804 	train loss: 0.6976 	val loss: 0.8756 	val score: 0.3896 	best val score: 0.3733
+[train full 76 0.000040 ] time elapsed: 26.9456 	train loss: 0.6977 	val loss: 0.8757 	val score: 0.3896 	best val score: 0.3733
+[train full 77 0.000040 ] time elapsed: 30.8224 	train loss: 0.6973 	val loss: 0.8757 	val score: 0.3895 	best val score: 0.3733
+[train full 78 0.000040 ] time elapsed: 26.8199 	train loss: 0.6974 	val loss: 0.8756 	val score: 0.3895 	best val score: 0.3733
+[train full 79 0.000040 ] time elapsed: 32.4454 	train loss: 0.6985 	val loss: 0.8756 	val score: 0.3895 	best val score: 0.3733
+[train full 80 0.000040 ] time elapsed: 30.5780 	train loss: 0.6967 	val loss: 0.8759 	val score: 0.3896 	best val score: 0.3733
+[train full 81 0.000040 ] time elapsed: 26.3738 	train loss: 0.6963 	val loss: 0.8762 	val score: 0.3897 	best val score: 0.3733
+KeyboardInterrupt
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "pretrain_embedder.py", line 491, in <module>
+    train_loss = train_one_epoch(model, optimizer, scheduler, train_loader, loss, n_train)
+  File "pretrain_embedder.py", line 466, in train_one_epoch
+Traceback (most recent call last):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+    optimizer.zero_grad()
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/_compile.py", line 24, in inner
+    return torch._dynamo.disable(fn, recursive)(*args, **kwargs)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/_dynamo/decorators.py", line 47, in disable
+    return DisableContext()(fn)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/_dynamo/eval_frame.py", line 290, in __call__
+    filename = inspect.getsourcefile(fn)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/inspect.py", line 705, in getsourcefile
+    if os.path.exists(filename):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/genericpath.py", line 19, in exists
+    os.stat(path)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/torch/utils/data/_utils/signal_handling.py", line 66, in handler
+    _error_if_any_worker_fails()
+SystemError: <built-in function _error_if_any_worker_fails> returned a result with an error set

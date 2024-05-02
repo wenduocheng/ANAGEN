@@ -1,0 +1,101 @@
+True
+device: cuda
+{'weight': 'unet', 'one_hot': True, 'lr': 0.0001, 'batch_size': 256, 'epochs': 100, 'channels': [16, 32, 64], 'drop_out': 0.2}
+Encoder_v2(
+  (model): Sequential(
+    (0): Conv1d(4, 16, kernel_size=(31,), stride=(1,), padding=(15,))
+    (1): ResnetBlock(
+      (norm1): GroupNorm(16, 16, eps=1e-06, affine=True)
+      (conv1): Conv1d(16, 32, kernel_size=(9,), stride=(1,), padding=(4,))
+      (norm2): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      (nin_shortcut): Conv1d(16, 32, kernel_size=(1,), stride=(1,))
+    )
+    (2): ResnetBlock(
+      (norm1): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (conv1): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (3): ResnetBlock(
+      (norm1): GroupNorm(16, 32, eps=1e-06, affine=True)
+      (conv1): Conv1d(32, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (nin_shortcut): Conv1d(32, 64, kernel_size=(1,), stride=(1,))
+    )
+    (4): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (5): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (6): ResnetBlock(
+      (norm1): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      (norm2): GroupNorm(16, 64, eps=1e-06, affine=True)
+      (dropout): Dropout(p=0.2, inplace=False)
+      (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (7): GroupNorm(16, 64, eps=1e-06, affine=True)
+    (8): Swish()
+    (9): Conv1d(64, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+  )
+  (final): Linear(in_features=128000, out_features=36, bias=True)
+)
+x: torch.Size([256, 4, 1000])
+y: torch.Size([256, 36])
+
+------- Start Training --------
+Traceback (most recent call last):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+[train full 0 0.000100 ] time elapsed: 26.6106 	train loss: 0.8779 	val loss: 0.8607 	val score: 0.4980 	best val score: 0.4980
+[train full 1 0.000100 ] time elapsed: 16.8907 	train loss: 0.8707 	val loss: 0.8604 	val score: 0.4962 	best val score: 0.4962
+[train full 2 0.000100 ] time elapsed: 18.5532 	train loss: 0.8701 	val loss: 0.8601 	val score: 0.4944 	best val score: 0.4944
+[train full 3 0.000100 ] time elapsed: 20.0045 	train loss: 0.8692 	val loss: 0.8599 	val score: 0.4925 	best val score: 0.4925
+[train full 4 0.000100 ] time elapsed: 17.7988 	train loss: 0.8695 	val loss: 0.8592 	val score: 0.4905 	best val score: 0.4905
+[train full 5 0.000100 ] time elapsed: 17.0573 	train loss: 0.8680 	val loss: 0.8587 	val score: 0.4882 	best val score: 0.4882
+Traceback (most recent call last):
+  File "pretrain_embedder.py", line 494, in <module>
+    val_loss, val_score = evaluate(model, val_loader, loss, metric, n_val)
+  File "pretrain_embedder.py", line 433, in evaluate
+    eval_score += metric(outs, ys)[0].item()
+  File "pretrain_embedder.py", line 78, in __call__
+    return 1 - self.score_func(output, target)[0], 1 - self.score_func(output, target)[1]
+  File "pretrain_embedder.py", line 60, in auroc_aupr
+    precision_temp, recall_temp, aupr_temp = calculate_aupr(result[:, i], y[:, i])
+  File "pretrain_embedder.py", line 46, in calculate_aupr
+    aupr = metrics.auc(recall_list, precision_list)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/sklearn/utils/_param_validation.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/sklearn/metrics/_ranking.py", line 92, in auc
+    y = column_or_1d(y)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/sklearn/utils/validation.py", line 1230, in column_or_1d
+    return _asarray_with_order(xp.reshape(y, (-1,)), order="C", xp=xp)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/sklearn/utils/_array_api.py", line 280, in reshape
+    return numpy.reshape(x, shape)
+  File "<__array_function__ internals>", line 200, in reshape
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/numpy/core/fromnumeric.py", line 298, in reshape
+    return _wrapfunc(a, 'reshape', newshape, order=order)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/site-packages/numpy/core/fromnumeric.py", line 51, in _wrapfunc
+    def _wrapfunc(obj, method, *args, **kwds):
+KeyboardInterrupt

@@ -1,0 +1,41 @@
+True
+device: cuda
+{'weight': 'nas-deepsea', 'one_hot': True, 'lr': 0.01, 'batch_size': 256, 'epochs': 100, 'channels': [16, 32, 64], 'drop_out': 0.2}
+NAS_DeepSEA(
+  (Conv1): Conv1d(4, 320, kernel_size=(8,), stride=(1,), padding=(4,))
+  (Conv2): Conv1d(320, 480, kernel_size=(8,), stride=(1,), padding=(4,))
+  (Conv3): Conv1d(480, 960, kernel_size=(8,), stride=(1,), padding=(4,))
+  (Maxpool): MaxPool1d(kernel_size=4, stride=4, padding=0, dilation=1, ceil_mode=False)
+  (Drop1): Dropout(p=0.2, inplace=False)
+  (Drop2): Dropout(p=0.5, inplace=False)
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (Linear1): Linear(in_features=60480, out_features=925, bias=True)
+  (Linear2): Linear(in_features=925, out_features=36, bias=True)
+)
+x: torch.Size([256, 4, 1000])
+y: torch.Size([256, 36])
+
+------- Start Training --------
+Traceback (most recent call last):
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/home/wenduoc/mambaforge/envs/geneorca/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+[train full 0 0.010000 ] time elapsed: 17.2462 	train loss: 0.8606 	val loss: 0.8327 	val score: 0.4001 	best val score: 0.4001
+[train full 1 0.010000 ] time elapsed: 14.8328 	train loss: 0.8368 	val loss: 0.8249 	val score: 0.3749 	best val score: 0.3749
+[train full 2 0.010000 ] time elapsed: 14.1234 	train loss: 0.8302 	val loss: 0.8185 	val score: 0.3650 	best val score: 0.3650
+[train full 3 0.010000 ] time elapsed: 15.6097 	train loss: 0.8248 	val loss: 0.8131 	val score: 0.3606 	best val score: 0.3606
+[train full 4 0.010000 ] time elapsed: 13.9673 	train loss: 0.8226 	val loss: 0.8109 	val score: 0.3581 	best val score: 0.3581
+[train full 5 0.010000 ] time elapsed: 14.0134 	train loss: 0.8205 	val loss: 0.8114 	val score: 0.3555 	best val score: 0.3555
+[train full 6 0.010000 ] time elapsed: 15.0787 	train loss: 0.8183 	val loss: 0.8112 	val score: 0.3534 	best val score: 0.3534
+Traceback (most recent call last):
+  File "pretrain_embedder.py", line 489, in <module>
+    train_loss = train_one_epoch(model, optimizer, scheduler, train_loader, loss, n_train)
+  File "pretrain_embedder.py", line 468, in train_one_epoch
+    train_loss += l.item()
+KeyboardInterrupt

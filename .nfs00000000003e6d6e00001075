@@ -1,0 +1,12 @@
+*.mat
+*.npz
+*.npy
+*.sh
+*.txt
+logs
+./deepsea/*.pth
+./deepsea/*.pth2
+__pycache__
+results_acc/
+relax/
+read_res.py
