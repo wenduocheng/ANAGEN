@@ -1,5 +1,7 @@
 # ANAGEN
 
+Here are the steps of running ANAGEN on the NAS-BENCH-360 DeepSEA task:
+
 1.Write dataloaders 
 
 2.Run DASH
