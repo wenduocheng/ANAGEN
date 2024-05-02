@@ -5,3 +5,5 @@ __pycache__
 results_acc/
 relax/
 read_res.py
+*.txt
+*.sh
